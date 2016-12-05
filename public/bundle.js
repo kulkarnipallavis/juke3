@@ -106,6 +106,7 @@
 	      _react2.default.createElement(_reactRouter.Route, { path: '/artists/:artistId/albums', component: _Albums2.default }),
 	      _react2.default.createElement(_reactRouter.Route, { path: '/artists/:artistId/songs', component: _Songs2.default })
 	    ),
+	    _react2.default.createElement(_reactRouter.Route, { path: 'playlists/:playlistId', component: Playlist }),
 	    _react2.default.createElement(_reactRouter.IndexRedirect, { to: '/albums' })
 	  )
 	), document.getElementById('app'));
@@ -26458,7 +26459,7 @@
 	
 	var _Album2 = _interopRequireDefault(_Album);
 	
-	var _Sidebar = __webpack_require__(264);
+	var _Sidebar = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"../components/Sidebar\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var _Sidebar2 = _interopRequireDefault(_Sidebar);
 	
@@ -26494,6 +26495,7 @@
 	    _this.prev = _this.prev.bind(_this);
 	    _this.selectAlbum = _this.selectAlbum.bind(_this);
 	    _this.selectArtist = _this.selectArtist.bind(_this);
+	    _this.selectPlaylist = _this.selectPlaylist.bind(_this);
 	    return _this;
 	  }
 	
@@ -26630,6 +26632,20 @@
 	      });
 	    }
 	  }, {
+	    key: 'selectPlaylist',
+	    value: function selectPlaylist(playlistId) {
+	      var _this6 = this;
+	
+	      _axios2.default.get('/api/playlists/' + playlistId).then(function (res) {
+	        return res.data;
+	      }).then(function (playlist) {
+	        playlist.songs = playlist.songs.map(_utils.convertSong);
+	        _this6.setState({
+	          selectedPlaylist: playlist
+	        });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	
@@ -26638,7 +26654,8 @@
 	        toggle: this.toggle,
 	        selectAlbum: this.selectAlbum,
 	        selectArtist: this.selectArtist,
-	        addPlaylist: this.addPlaylist
+	        addPlaylist: this.addPlaylist,
+	        playlists: this.playlists
 	      });
 	
 	      return _react2.default.createElement(
@@ -28179,7 +28196,8 @@
 	  currentSongList: [],
 	  isPlaying: false,
 	  progress: 0,
-	  playlists: []
+	  playlists: [],
+	  selectedPlaylist: {}
 	};
 	
 	exports.default = initialState;
@@ -28444,105 +28462,7 @@
 	exports.default = Songs;
 
 /***/ },
-/* 264 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	
-	var _react = __webpack_require__(1);
-	
-	var _react2 = _interopRequireDefault(_react);
-	
-	var _reactRouter = __webpack_require__(178);
-	
-	var _NewPlaylist = __webpack_require__(265);
-	
-	var _NewPlaylist2 = _interopRequireDefault(_NewPlaylist);
-	
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-	
-	var Sidebar = function Sidebar(props) {
-	
-	  return _react2.default.createElement(
-	    'sidebar',
-	    null,
-	    _react2.default.createElement('img', { src: 'juke.svg', className: 'logo' }),
-	    _react2.default.createElement(
-	      'section',
-	      null,
-	      _react2.default.createElement(
-	        'h4',
-	        { className: 'menu-item' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/albums' },
-	          'ALBUMS'
-	        )
-	      )
-	    ),
-	    _react2.default.createElement(
-	      'section',
-	      null,
-	      _react2.default.createElement(
-	        'h4',
-	        { className: 'menu-item' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: '/artists' },
-	          'ARTISTS'
-	        )
-	      )
-	    ),
-	    _react2.default.createElement('hr', null),
-	    _react2.default.createElement(
-	      'section',
-	      null,
-	      _react2.default.createElement(
-	        'h4',
-	        { className: 'text-muted' },
-	        'PLAYLISTS'
-	      ),
-	      _react2.default.createElement(
-	        'h4',
-	        null,
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { className: 'btn btn-primary btn-block', to: '/newplaylist' },
-	          _react2.default.createElement('span', { className: 'glyphicon glyphicon-plus' }),
-	          ' PLAYLIST'
-	        )
-	      )
-	    ),
-	    _react2.default.createElement('hr', null),
-	    _react2.default.createElement(
-	      'section',
-	      null,
-	      _react2.default.createElement(
-	        'ul',
-	        { className: 'list-unstyled' },
-	        playlists.map(function (playlist) {
-	          return _react2.default.createElement(
-	            'li',
-	            { key: playlist.id, className: 'playlist-item menu-item' },
-	            _react2.default.createElement(
-	              _reactRouter.Link,
-	              { to: 'FILL_ME_IN' },
-	              playlist.name
-	            )
-	          );
-	        })
-	      )
-	    )
-	  );
-	};
-	
-	exports.default = Sidebar;
-
-/***/ },
+/* 264 */,
 /* 265 */
 /***/ function(module, exports, __webpack_require__) {
 

@@ -33,16 +33,15 @@ const Sidebar = (props) => {
 
       <section>
       <ul className="list-unstyled">
-        
         {
-            playlists.map(playlist => {
-              return (
-                <li key={playlist.id} className="playlist-item menu-item">
-                  <Link to="FILL_ME_IN">{playlist.name}</Link>
-                </li>
-              );
-            })
-          }
+          playlists.map(playlist => {
+            return (
+              <li key={playlist.id} className="playlist-item menu-item">
+                <Link to={`/playlists/${playlist.id}`}>{playlist.name}
+              </li>
+            );
+          })
+        }
       </ul>
       </section>
 

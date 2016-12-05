@@ -26502,7 +26502,7 @@
 	    value: function componentDidMount() {
 	      var _this2 = this;
 	
-	      Promise.all([_axios2.default.get('/api/albums/'), _axios2.default.get('/api/artists/')]).then(function (res) {
+	      Promise.all([_axios2.default.get('/api/albums/'), _axios2.default.get('/api/artists/'), _axios2.default.get('/api/playlists')]).then(function (res) {
 	        return res.map(function (r) {
 	          return r.data;
 	        });
@@ -26519,10 +26519,11 @@
 	    }
 	  }, {
 	    key: 'onLoad',
-	    value: function onLoad(albums, artists) {
+	    value: function onLoad(albums, artists, playlists) {
 	      this.setState({
 	        albums: (0, _utils.convertAlbums)(albums),
-	        artists: artists
+	        artists: artists,
+	        playlists: playlists
 	      });
 	    }
 	  }, {
@@ -26616,6 +26617,19 @@
 	      this.setState({ selectedArtist: artist });
 	    }
 	  }, {
+	    key: 'addPlaylist',
+	    value: function addPlaylist(playlistName) {
+	      var _this5 = this;
+	
+	      _axios2.default.post('/api/playlists', { name: playlistName }).then(function (res) {
+	        return res.data;
+	      }).then(function (playlist) {
+	        _this5.setState({
+	          playlists: [].concat(_toConsumableArray(_this5.state.playlists), [playlist])
+	        });
+	      });
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
 	
@@ -26623,7 +26637,8 @@
 	        toggleOne: this.toggleOne,
 	        toggle: this.toggle,
 	        selectAlbum: this.selectAlbum,
-	        selectArtist: this.selectArtist
+	        selectArtist: this.selectArtist,
+	        addPlaylist: this.addPlaylist
 	      });
 	
 	      return _react2.default.createElement(
@@ -28163,7 +28178,8 @@
 	  currentSong: {},
 	  currentSongList: [],
 	  isPlaying: false,
-	  progress: 0
+	  progress: 0,
+	  playlists: []
 	};
 	
 	exports.default = initialState;
@@ -28503,25 +28519,22 @@
 	    ),
 	    _react2.default.createElement('hr', null),
 	    _react2.default.createElement(
-	      'ul',
-	      { className: 'list-unstyled' },
+	      'section',
+	      null,
 	      _react2.default.createElement(
-	        'li',
-	        { className: 'playlist-item menu-item' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: 'FILL_ME_IN' },
-	          'some playlist'
-	        )
-	      ),
-	      _react2.default.createElement(
-	        'li',
-	        { className: 'playlist-item menu-item' },
-	        _react2.default.createElement(
-	          _reactRouter.Link,
-	          { to: 'WHERE_TO_GO' },
-	          'another playlist'
-	        )
+	        'ul',
+	        { className: 'list-unstyled' },
+	        playlists.map(function (playlist) {
+	          return _react2.default.createElement(
+	            'li',
+	            { key: playlist.id, className: 'playlist-item menu-item' },
+	            _react2.default.createElement(
+	              _reactRouter.Link,
+	              { to: 'FILL_ME_IN' },
+	              playlist.name
+	            )
+	          );
+	        })
 	      )
 	    )
 	  );

@@ -22,20 +22,23 @@ export default class NewPlaylistContainer extends Component {
 	}
 
 	handleSubmit (evt) {
-	  const value = evt.target.value;
-	  console.log("value*****",value);
-	  this.setState({
-	    inputValue: value
-	  });
-	   evt.preventDefault();
-	}
+	    evt.preventDefault();
+
+	    const value = evt.target.value;
+	  	console.log("value*****",value);
+	  	this.setState({
+	    	inputValue: value
+		});
+	    const addPlaylist = this.props.addPlaylist;
+	    addPlaylist(this.state.inputValue);
+  	}
 
 	componentDidMount(){
-		axios.post('/api/playlists')
-		  .then(res => res.data)
-		  .then(result => {
-		    console.log(result) // response json from the server!
-		  });
+		// axios.post('/api/playlists')
+		//   .then(res => res.data)
+		//   .then(result => {
+		//     console.log(result) // response json from the server!
+		//   });
 	}
 
 	render () {
